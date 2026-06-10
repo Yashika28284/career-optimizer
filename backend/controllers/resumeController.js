@@ -45,6 +45,8 @@ export const analyzeResume = async (req, res) => {
     const rawText = result.response.text();
 
     let geminiData;
+    let atsScore = 0;
+
     try {
       const cleaned = rawText.replace(/```json|```/g, "").trim();
       geminiData = JSON.parse(cleaned);
@@ -57,6 +59,7 @@ export const analyzeResume = async (req, res) => {
           : 0;
     } catch {
       geminiData = { missingSkills: [], presentSkills: [], keywordsToAdd: [], suggestions: ["Could not parse AI response"], summary: rawText.slice(0, 300) };
+      atsScore = 0;
     }
 
     return res.json({ atsScore: parseFloat(atsScore), ...geminiData });
