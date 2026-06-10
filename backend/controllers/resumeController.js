@@ -53,7 +53,7 @@ export const analyzeResume = async (req, res) => {
       const present = geminiData.presentSkills?.length || 0;
       const missing = geminiData.missingSkills?.length || 0;
 
-      const atsScore =
+      atsScore =
         present + missing > 0
           ? Math.round((present / (present + missing)) * 100)
           : 0;
@@ -61,6 +61,9 @@ export const analyzeResume = async (req, res) => {
       geminiData = { missingSkills: [], presentSkills: [], keywordsToAdd: [], suggestions: ["Could not parse AI response"], summary: rawText.slice(0, 300) };
       atsScore = 0;
     }
+    console.log("ATS Score:", atsScore);
+    console.log("Present Skills:", geminiData.presentSkills?.length);
+    console.log("Missing Skills:", geminiData.missingSkills?.length);
 
     return res.json({ atsScore: parseFloat(atsScore), ...geminiData });
   } catch (err) {
