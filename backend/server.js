@@ -1,12 +1,18 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import fs from "fs";
 import resumeRoutes from "./routes/resumeRoutes.js";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Create uploads folder if it doesn't exist
+if (!fs.existsSync("uploads")) {
+    fs.mkdirSync("uploads");
+}
 
 app.use(cors({
     origin: [
