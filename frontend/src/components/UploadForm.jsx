@@ -22,7 +22,7 @@ export default function UploadForm({ setResult, setLoading, loading }) {
         formData.append("jobDescription", jd);
 
         try {
-            const res = await axios.post("https://career-optimizer.onrender.com/", formData, {
+            const res = await axios.post("https://career-optimizer.onrender.com/api/resume/analyze", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             setResult(res.data);
