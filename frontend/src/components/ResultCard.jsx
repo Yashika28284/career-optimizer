@@ -1,73 +1,119 @@
+import ScoreGauge from "./ScoreGauge";
+
 export default function ResultCard({ result }) {
-    const score = result.atsScore;
-    const scoreColor = score >= 70 ? "#10b981" : score >= 45 ? "#f59e0b" : "#ef4444";
+    const score = result.atsScore ?? 0;
     const scoreLabel = score >= 70 ? "Strong Match" : score >= 45 ? "Moderate Match" : "Weak Match";
 
-    const card = {
-        background: "var(--surface)",
-        border: "1px solid var(--border)",
-        borderRadius: 12,
+    const cardStyle = {
         padding: "1.5rem",
     };
 
-    const Tag = ({ text, color }) => (
-        <span style={{
-            display: "inline-block", background: `${color}18`,
-            color, border: `1px solid ${color}40`,
-            borderRadius: 6, padding: "0.3rem 0.7rem",
-            fontSize: "0.75rem", fontFamily: "var(--font-mono)",
-            margin: "0.25rem"
-        }}>{text}</span>
-    );
+    const sectionLabel = {
+        fontSize: "0.72rem",
+        color: "var(--muted)",
+        marginBottom: "0.85rem",
+        fontFamily: "var(--font-display)",
+        fontWeight: 700,
+        letterSpacing: "0.05em",
+        textTransform: "uppercase",
+        display: "flex",
+        alignItems: "center",
+        gap: "0.5rem",
+    };
 
     return (
-        <div style={{ display: "grid", gridTemplateColumns: "200px 1fr", gap: "1.5rem" }}>
-            {/* ATS Score */}
-            <div style={{ ...card, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center" }}>
-                <div style={{
-                    fontSize: "3.5rem", fontFamily: "var(--font-display)",
-                    fontWeight: 800, color: scoreColor, lineHeight: 1
-                }}>{score}%</div>
-                <div style={{ marginTop: "0.5rem", fontSize: "0.75rem", color: scoreColor, fontWeight: 700 }}>{scoreLabel}</div>
-                <div style={{ marginTop: "0.5rem", fontSize: "0.7rem", color: "var(--muted)" }}>ATS Match Score</div>
+        <div className="result-grid">
+            {/* ATS Score Gauge */}
+            <div
+                className="glass-card gauge-col"
+                style={{
+                    ...cardStyle,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    textAlign: "center",
+                    gap: "0.75rem",
+                }}
+            >
+                <ScoreGauge score={score} label={scoreLabel} />
+                <div style={{ fontSize: "0.7rem", color: "var(--muted)", fontFamily: "var(--font-mono)" }}>
+                    ATS MATCH SCORE
+                </div>
             </div>
 
             {/* Details */}
             <div style={{ display: "grid", gap: "1rem" }}>
                 {/* Summary */}
-                <div style={card}>
-                    <p style={{ fontSize: "0.8rem", color: "var(--muted)", marginBottom: "0.5rem", fontFamily: "var(--font-display)", fontWeight: 700 }}>AI SUMMARY</p>
+                <div className="glass-card" style={cardStyle}>
+                    <p style={sectionLabel}>
+                        <span className="material-symbols-outlined" style={{ fontSize: "1rem", color: "var(--accent)" }}>neurology</span>
+                        AI Summary
+                    </p>
                     <p style={{ fontSize: "0.85rem", lineHeight: 1.7, color: "var(--text)" }}>{result.summary}</p>
                 </div>
 
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-                    {/* Missing Skills */}
-                    <div style={card}>
-                        <p style={{ fontSize: "0.75rem", color: "#ef4444", marginBottom: "0.75rem", fontFamily: "var(--font-display)", fontWeight: 700 }}>❌ MISSING SKILLS</p>
-                        <div>{result.missingSkills?.map((s, i) => <Tag key={i} text={s} color="#ef4444" />)}</div>
+                <div className="skills-grid">
+                    {/* Present Skills */}
+                    <div className="glass-card" style={cardStyle}>
+                        <p style={{ ...sectionLabel, color: "#34d399" }}>
+                            <span className="material-symbols-outlined" style={{ fontSize: "1rem" }}>check_circle</span>
+                            Present Skills
+                        </p>
+                        <div>
+                            {result.presentSkills?.map((s, i) => (
+                                <span key={i} className="tag tag-positive">{s}</span>
+                            ))}
+                        </div>
                     </div>
 
-                    {/* Present Skills */}
-                    <div style={card}>
-                        <p style={{ fontSize: "0.75rem", color: "#10b981", marginBottom: "0.75rem", fontFamily: "var(--font-display)", fontWeight: 700 }}>✅ PRESENT SKILLS</p>
-                        <div>{result.presentSkills?.map((s, i) => <Tag key={i} text={s} color="#10b981" />)}</div>
+                    {/* Missing Skills */}
+                    <div className="glass-card" style={cardStyle}>
+                        <p style={{ ...sectionLabel, color: "#f87171" }}>
+                            <span className="material-symbols-outlined" style={{ fontSize: "1rem" }}>cancel</span>
+                            Missing Skills
+                        </p>
+                        <div>
+                            {result.missingSkills?.map((s, i) => (
+                                <span key={i} className="tag tag-critical">{s}</span>
+                            ))}
+                        </div>
                     </div>
                 </div>
 
                 {/* Keywords to Add */}
-                <div style={card}>
-                    <p style={{ fontSize: "0.75rem", color: "#f59e0b", marginBottom: "0.75rem", fontFamily: "var(--font-display)", fontWeight: 700 }}>🔑 KEYWORDS TO ADD</p>
-                    <div>{result.keywordsToAdd?.map((k, i) => <Tag key={i} text={k} color="#f59e0b" />)}</div>
+                <div className="glass-card" style={cardStyle}>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.85rem" }}>
+                        <p style={{ ...sectionLabel, marginBottom: 0, color: "var(--accent)" }}>
+                            <span className="material-symbols-outlined" style={{ fontSize: "1rem" }}>key</span>
+                            Keywords to Add
+                        </p>
+                        <span className="badge-critical-focus">
+                            <span className="material-symbols-outlined" style={{ fontSize: "0.85rem" }}>priority_high</span>
+                            Critical Focus
+                        </span>
+                    </div>
+                    <div>
+                        {result.keywordsToAdd?.map((k, i) => (
+                            <span key={i} className="tag tag-keyword">{k}</span>
+                        ))}
+                    </div>
                 </div>
 
-                {/* Suggestions */}
-                <div style={card}>
-                    <p style={{ fontSize: "0.75rem", color: "var(--accent2)", marginBottom: "0.75rem", fontFamily: "var(--font-display)", fontWeight: 700 }}>💡 SUGGESTIONS</p>
-                    <ul style={{ paddingLeft: "1rem" }}>
+                {/* AI Recommendations */}
+                <div className="glass-card" style={cardStyle}>
+                    <p style={sectionLabel}>
+                        <span className="material-symbols-outlined" style={{ fontSize: "1rem", color: "var(--accent2)" }}>auto_awesome</span>
+                        AI Recommendations
+                    </p>
+                    <div>
                         {result.suggestions?.map((s, i) => (
-                            <li key={i} style={{ fontSize: "0.82rem", lineHeight: 1.7, marginBottom: "0.3rem", color: "var(--text)" }}>{s}</li>
+                            <div key={i} className="rec-item">
+                                <span className="material-symbols-outlined rec-icon">auto_awesome</span>
+                                <p style={{ fontSize: "0.82rem", lineHeight: 1.7, color: "var(--text)" }}>{s}</p>
+                            </div>
                         ))}
-                    </ul>
+                    </div>
                 </div>
             </div>
         </div>

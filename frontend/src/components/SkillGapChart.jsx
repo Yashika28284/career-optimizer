@@ -23,7 +23,7 @@ export default function SkillGapChart({ result }) {
     };
 
     return (
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem" }}>
+        <div className="skills-grid" style={{ gap: "1.5rem" }}>
             <div style={card}>
                 <p style={{ fontSize: "0.75rem", color: "var(--muted)", marginBottom: "1.25rem", fontFamily: "var(--font-display)", fontWeight: 700 }}>
                     SKILL RADAR — RESUME vs REQUIRED
