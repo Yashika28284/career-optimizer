@@ -50,14 +50,31 @@ body {
   line-height: 1;
 }
 
+/* ---------- Smoke background (WebGL2) ---------- */
+/* Plain-CSS equivalent of the shadcn demo's "w-full h-full block" Tailwind
+   classes, since this project doesn't use Tailwind. Fixed full-viewport,
+   sits behind everything (negative z-index). Rendered exactly as the
+   shader outputs it — no filter/dimming/overlay on top. */
+.smoke-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  z-index: -1;
+  background: #0a0a0a;
+  /* fallback if WebGL2 is unavailable */
+}
+
 /* ---------- Glassmorphic surfaces ---------- */
 .glass-card {
-  background: var(--surface);
+  background: rgba(255, 255, 255, 0.045);
   border: 1px solid var(--border);
   border-radius: 1rem;
   /* rounded-2xl */
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(28px) saturate(120%);
+  -webkit-backdrop-filter: blur(28px) saturate(120%);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
@@ -96,21 +113,28 @@ body {
   font-weight: 700;
   font-size: 1rem;
   letter-spacing: -0.01em;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
 }
 
 .header-subtitle {
   font-size: 0.7rem;
   color: var(--muted);
   font-family: var(--font-mono);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
 }
 
 /* ---------- Hero ---------- */
 .hero {
   text-align: center;
-  padding: 3.5rem 1.5rem 2.5rem;
-  max-width: 720px;
-  margin: 0 auto;
+  padding: 2.5rem 2rem;
+  max-width: 760px;
+  margin: 2rem auto 0;
   animation: fadeInUp 0.6s ease both;
+  background: rgba(10, 10, 11, 0.45);
+  border: 1px solid var(--border);
+  border-radius: 1.5rem;
+  backdrop-filter: blur(20px) saturate(110%);
+  -webkit-backdrop-filter: blur(20px) saturate(110%);
 }
 
 .hero-title {
@@ -119,17 +143,19 @@ body {
   font-size: clamp(2rem, 6vw, 3.25rem);
   letter-spacing: -0.03em;
   line-height: 1.1;
-  background: linear-gradient(135deg, #ffffff 20%, var(--accent) 60%, var(--accent2) 100%);
+  background: linear-gradient(135deg, #ffffff 45%, var(--accent) 80%, var(--accent2) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 4px 30px rgba(0, 0, 0, 0.8));
 }
 
 .hero-sub {
   margin-top: 1rem;
-  color: var(--muted);
+  color: #d1d5db;
   font-size: 0.95rem;
   line-height: 1.7;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.85);
 }
 
 /* ---------- Buttons / CTA ---------- */
@@ -256,12 +282,18 @@ body {
 /* ---------- Footer ---------- */
 .footer {
   text-align: center;
-  padding: 2.5rem 1.5rem 3rem;
+  margin-top: 2rem;
+  padding: 1.1rem 1.5rem;
   font-size: 0.7rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: #d1d5db;
   font-family: var(--font-mono);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.85);
+  background: rgba(10, 10, 11, 0.5);
+  border-top: 1px solid var(--border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 /* ---------- Animations ---------- */

@@ -2,7 +2,7 @@ import { useState } from "react";
 import UploadForm from "./components/UploadForm";
 import ResultCard from "./components/ResultCard";
 import SkillGapChart from "./components/SkillGapChart";
-import ShaderBackground from "./components/ShaderBackground";
+import SmokeBackground from "./components/SmokeBackground";
 
 export default function App() {
     const [result, setResult] = useState(null);
@@ -10,7 +10,7 @@ export default function App() {
 
     return (
         <div style={{ minHeight: "100vh", position: "relative" }}>
-            <ShaderBackground />
+            <SmokeBackground smokeColor="#00f0ff" />
             {/* Header */}
             <header className="header-bar">
                 <div className="header-icon">
